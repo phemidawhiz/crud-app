@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik } from "formik";
+import { Field, Formik } from "formik";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
 import { IContract } from "../../utils/types";
@@ -25,7 +25,7 @@ const CreatePage = () => {
     activated: Yup.boolean(),
     companyAddress: Yup.string().required("Company address is required"),
     companyName: Yup.string().required("Company name is required"),
-    companyRegistrationNumber: Yup.number().required(
+    companyRegistrationNumber: Yup.string().required(
       "Company reg number is required"
     ),
     title: Yup.string().required("Title is required"),
@@ -33,16 +33,18 @@ const CreatePage = () => {
     telephoneFax: Yup.string().required("Phone is required"),
     nationality: Yup.string().required("Nationality is required"),
   });
-  const handleSubmit = () => {};
+  const handleSubmit = (values: IContract) => {
+    console.log(values);
+  };
   return (
     <Container>
       <div className="flex flex-row justify-center items-center h-screen">
-        <div className="border-2 rounded-lg border-[#ddd] w-[90%] lg:w-[50%] md:w-[60%]">
-          <h3 className="text-2xl text-purple font-bold text-center my-2 mt-4">
+        <div className="border-2 rounded-lg border-[#ddd] w-full sm:w-[96%] lg:w-[50%] md:w-[60%] md:mt-[0px] mt-[600px] pb-8">
+          <h3 className="text-2xl text-purple font-bold text-center my-2  md:mt-4">
             Create a new buyer
           </h3>
 
-          <div className="px-8 p-8">
+          <div className="w-[100%] px-4">
             <Formik
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
@@ -58,9 +60,9 @@ const CreatePage = () => {
               }) => (
                 <form
                   onSubmit={handleSubmit}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-8 "
+                  className="flex flex-row flex-wrap w-[100%]  justify-between gap-y-8"
                 >
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="companyName" className="font-semibold">
                       Company Name
                     </label>
@@ -82,7 +84,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="companyAddress" className="font-semibold">
                       Company Address
                     </label>
@@ -104,7 +106,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>{" "}
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="companyName" className="font-semibold">
                       Company Reg. Number
                     </label>
@@ -128,7 +130,7 @@ const CreatePage = () => {
                         </p>
                       )}
                   </div>{" "}
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="telephoneFax" className="font-semibold">
                       Telephone Fax
                     </label>
@@ -150,7 +152,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>{" "}
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="title" className="font-semibold">
                       Title
                     </label>
@@ -170,7 +172,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>{" "}
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="email" className="font-semibold">
                       Email
                     </label>
@@ -190,7 +192,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>{" "}
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="website" className="font-semibold">
                       Website
                     </label>
@@ -200,7 +202,6 @@ const CreatePage = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="yourwebsite.com"
-                      type={"url"}
                       className={`relative ${
                         touched.website && errors.website ? "border-danger" : ""
                       }`}
@@ -211,7 +212,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="Nationality" className="font-semibold">
                       Nationality
                     </label>
@@ -233,7 +234,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>
-                  <div>
+                  <div className="md:w-[45%] w-[100%]">
                     <label htmlFor="representedBy" className="font-semibold">
                       Represented By
                     </label>
@@ -255,29 +256,30 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>
-                  <div>
-                    <label htmlFor="representedBy" className="font-semibold">
-                      Represented By
+                  <div className="md:w-[45%] w-[100%] flex flex-col items-left">
+                    <label id="my-radio-group" className="font-semibold">
+                      Is buyer activated?
                     </label>
-                    <Input
-                      name="representedBy"
-                      // value={values.activated}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      type={"checkbox"}
-                      className={`relative  ${
-                        touched.activated && errors.activated
-                          ? "border-danger"
-                          : ""
-                      }`}
-                    />
-                    {errors.activated && touched.activated && (
-                      <p className="absolute  text-danger text-xs mt-[0px]">
-                        {errors.activated}
-                      </p>
-                    )}
+                    <div
+                      role="group"
+                      className="flex flex-row gap-4 items-center mt-2"
+                      aria-labelledby="my-radio-group"
+                    >
+                      <label>
+                        <Field type="radio" name="activated" value={"true"} />
+                        Yes
+                      </label>
+                      <label>
+                        <Field type="radio" name="activated" value={"false"} />
+                        No
+                      </label>
+                    </div>
                   </div>
-                  <Button className="col-span-2 mt-4">CREATE BUYER</Button>
+                  <div className="w-full">
+                    <Button className="col-span-2 mt-4 w-full">
+                      CREATE BUYER
+                    </Button>
+                  </div>
                 </form>
               )}
             </Formik>
