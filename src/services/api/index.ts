@@ -8,8 +8,20 @@ export const getAllContracts = async () => {
 };
 
 export const getContractById = async (id: string) => {
-  const res = await axiosInstance(`${id}`);
-  return res.data;
+  // const res = await axiosInstance(`${id}`);
+
+  return {
+    activated: true,
+    website: "https://stacopoc@stacoinc.com",
+    title: "Mr",
+    representedBy: "Moran Stanton",
+    companyName: "ILLUMITY",
+    email: "moranstanton@illumity.com",
+    telephoneFax: "+23 (877) 528-2476",
+    companyAddress: "796 Knight Court, Wanship, Maryland, 4544",
+    nationality: "Mexico",
+    companyRegistrationNumber: "RC77383",
+  };
 };
 
 export const createContract = async (body: any) => {

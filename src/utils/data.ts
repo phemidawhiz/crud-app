@@ -179,4 +179,7 @@ export const tableHeaders = [
   "Telephone Fax",
   "Email",
   "Website",
+  "Activated",
+  "Edit",
+  "Delete",
 ];

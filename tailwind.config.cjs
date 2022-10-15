@@ -42,7 +42,7 @@ module.exports = {
       'purple': '#4834d4',
       'cyan': 'hsl(180, 66%, 49%)',
       'cyan-hover': 'rgba(41,199,199,0.7)',
-      'dark-violet': "hsl(257, 27%, 26%)",
+      'violet': "#7158e2",
       'danger': 'hsl(0, 87%, 67%)',
       'tomato': 'tomato',
       'dark-blue': 'hsl(255, 11%, 22%)',
