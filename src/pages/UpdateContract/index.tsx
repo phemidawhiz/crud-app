@@ -2,26 +2,40 @@ import React from "react";
 import { Field, Formik } from "formik";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
-import { IContract } from "../../utils/types";
+import { IContract, ICreateBuyerPayload } from "../../utils/types";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import Goback from "../../components/GoBack";
-import { useGetContractById } from "../../services/customHook";
+import {
+  useGetContractById,
+  useUpdateContract,
+} from "../../services/customHook";
+import { useNotifications } from "../../customHooks";
 
 const UpdateContract = (props: any) => {
+  const { successAlert, errorAlert } = useNotifications();
   const { data: contrractDetails } = useGetContractById("dafdf");
-  const initialValues: IContract = {
+  const { mutate: handleUpdateBuyer, isLoading: isUpdateBuyerLoading } =
+    useUpdateContract({
+      onSuccess: (res: any) => {
+        successAlert("Contract updated successfully");
+      },
+      onError: (err: any) => {
+        errorAlert(err.message || "Error occurred");
+      },
+    });
+  const initialValues: ICreateBuyerPayload = {
     website: contrractDetails?.website || "",
     representedBy: contrractDetails?.representedBy || "",
-    activated: contrractDetails?.activated || false,
+    status: contrractDetails?.status || "",
     companyAddress: contrractDetails?.companyAddress || "",
     companyName: contrractDetails?.companyName || "",
     companyRegistrationNumber:
       contrractDetails?.companyRegistrationNumber || "",
-    title: contrractDetails?.title || "",
+    // title: contrractDetails?.title || "",
     email: contrractDetails?.email || "",
     telephoneFax: contrractDetails?.telephoneFax || "",
-    nationality: contrractDetails?.nationality || "",
+    // nationality: contrractDetails?.nationality || "",
   };
   const validationSchema = Yup.object().shape({
     website: Yup.string().required("Website is required"),
@@ -37,8 +51,9 @@ const UpdateContract = (props: any) => {
     telephoneFax: Yup.string().required("Phone is required"),
     nationality: Yup.string().required("Nationality is required"),
   });
-  const handleSubmit = (values: IContract) => {
+  const handleSubmit = (values: ICreateBuyerPayload) => {
     console.log(values);
+    handleUpdateBuyer(values);
   };
   return (
     <Container>
@@ -159,7 +174,7 @@ const UpdateContract = (props: any) => {
                       </p>
                     )}
                   </div>{" "}
-                  <div className="md:w-[48%] w-[100%]">
+                  {/* <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="title" className="font-semibold">
                       Title
                     </label>
@@ -178,7 +193,7 @@ const UpdateContract = (props: any) => {
                         {errors.title}
                       </p>
                     )}
-                  </div>{" "}
+                  </div>{" "} */}
                   <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="email" className="font-semibold">
                       Email
@@ -219,7 +234,7 @@ const UpdateContract = (props: any) => {
                       </p>
                     )}
                   </div>
-                  <div className="md:w-[48%] w-[100%]">
+                  {/* <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="Nationality" className="font-semibold">
                       Nationality
                     </label>
@@ -240,8 +255,8 @@ const UpdateContract = (props: any) => {
                         {errors.nationality}
                       </p>
                     )}
-                  </div>
-                  <div className="md:w-[48%] w-[100%]">
+                  </div> */}
+                  {/* <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="representedBy" className="font-semibold">
                       Represented By
                     </label>
@@ -262,7 +277,7 @@ const UpdateContract = (props: any) => {
                         {errors.representedBy}
                       </p>
                     )}
-                  </div>
+                  </div> */}
                   <div className="md:w-[48%] w-[100%] flex flex-col items-left">
                     <label id="my-radio-group" className="font-semibold">
                       Is buyer activated?
@@ -276,25 +291,25 @@ const UpdateContract = (props: any) => {
                         <Field
                           className="mr-2"
                           type="radio"
-                          name="activated"
-                          value={"true"}
+                          name="status"
+                          value={"ACTIVE"}
                         />
-                        Yes
+                        ACTIVE
                       </label>
                       <label className=" cursor-pointer">
                         <Field
                           className="mr-2"
                           type="radio"
-                          name="activated"
-                          value={"false"}
+                          name="status"
+                          value={"INACTIVE"}
                         />
-                        No
+                        INACTIVE
                       </label>
                     </div>
                   </div>
                   <div className="w-full">
-                    <Button className="col-span-2 mt-4 w-full">
-                      CREATE BUYER
+                    <Button isLoading={isUpdateBuyerLoading} className="w-full">
+                      UPDATE BUYER
                     </Button>
                   </div>
                 </form>

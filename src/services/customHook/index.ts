@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { ICreateBuyerPayload } from "../../utils/types";
 import {
   createContract,
   getAllContracts,
@@ -12,7 +13,11 @@ export const useGetContracts = () =>
 export const useGetContractById = (id: string) =>
   useQuery([], () => getContractById(id));
 
-export const useCreateContract = () =>
-  useMutation((body) => createContract(body));
-export const useUpdateContract = () =>
-  useMutation((body) => updateContract(body));
+export const useCreateContract = (options = {}) =>
+  useMutation((body: ICreateBuyerPayload) => createContract(body), {
+    ...options,
+  });
+export const useUpdateContract = (options = {}) =>
+  useMutation((body: ICreateBuyerPayload) => updateContract(body), {
+    ...options,
+  });

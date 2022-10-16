@@ -1,7 +1,8 @@
 import React from "react";
+import Container from "../../components/Container";
 
 const ViewProduct = () => {
-  return <div>ViewProduct</div>;
+  return <Container>ViewProduct</Container>;
 };
 
 export default ViewProduct;

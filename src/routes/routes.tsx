@@ -10,7 +10,9 @@ const { ALL_CONTRACTS, CREATE_CONTRACT, UPDATE_CONTRACT, VIEW_CONTRACT } =
 
 const AuthPage = WithSuspense(lazy(() => import("../pages/AuthPage")));
 const AllContractsPage = WithSuspense(lazy(() => import("../pages/Homepage")));
-const CreateContractPage = WithSuspense(lazy(() => import("../pages/Create")));
+const CreateContractPage = WithSuspense(
+  lazy(() => import("../pages/CreateContract"))
+);
 const UpdateContractPage = WithSuspense(
   lazy(() => import("../pages/UpdateContract"))
 );

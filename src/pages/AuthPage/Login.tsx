@@ -3,19 +3,31 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import { ISetTab } from "../../utils/types";
+import { ILoginPayload, ISetTab } from "../../utils/types";
+import { useLogin } from "../../services/customHook/auth";
+import { useNotifications } from "../../customHooks";
 
 const Login = ({ setTab }: ISetTab) => {
-  console.log("object");
-  const initialValues = {
-    email: "",
+  const { successAlert, errorAlert } = useNotifications();
+  const { mutate: handleLogin, isLoading: isLoginLoading } = useLogin({
+    onSuccess: () => {
+      successAlert("Login successfull");
+    },
+    onError: (err: any) => {
+      errorAlert(err.message);
+    },
+  });
+  const initialValues: ILoginPayload = {
+    username: "",
     password: "",
   };
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required("Email is required"),
+    username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
   });
-  const handleSubmit = () => {};
+  const handleSubmit = (values: ILoginPayload) => {
+    handleLogin(values);
+  };
   return (
     <Formik
       onSubmit={handleSubmit}
@@ -29,23 +41,23 @@ const Login = ({ setTab }: ISetTab) => {
         handleChange,
         handleBlur,
         handleSubmit,
-        dirty,
-        isValid,
       }) => (
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col my-4">
-            <label htmlFor="">Email</label>
+            <label htmlFor="">Username</label>
             <Input
-              name="email"
-              value={values.email}
+              name="username"
+              value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
-              placeholder="sample@test.com"
+              placeholder="Your username"
               // className="mt-1"
-              className={touched.email && errors.email ? "border-danger" : ""}
+              className={
+                touched.username && errors.username ? "border-danger" : ""
+              }
             />
-            {errors.email && touched.email && (
-              <p className="text-danger text-sm mt-[0px]">{errors.email}</p>
+            {errors.username && touched.username && (
+              <p className="text-danger text-sm mt-[0px]">{errors.username}</p>
             )}
           </div>
           <div className="flex flex-col mt-4">
@@ -66,7 +78,9 @@ const Login = ({ setTab }: ISetTab) => {
               <p className="text-danger text-sm mt-[0px]">{errors.password}</p>
             )}
           </div>
-          <Button className="w-full mt-4">LOGIN</Button>
+          <Button className="w-full mt-4" isLoading={isLoginLoading}>
+            LOGIN
+          </Button>
           <p className="text-sm mt-2">
             Don't have an account?{" "}
             <span

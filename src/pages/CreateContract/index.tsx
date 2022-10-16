@@ -2,39 +2,52 @@ import React from "react";
 import { Field, Formik } from "formik";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
-import { IContract } from "../../utils/types";
+import { IContract, ICreateBuyerPayload } from "../../utils/types";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import Goback from "../../components/GoBack";
+import { useCreateContract } from "../../services/customHook";
+import { useNotifications } from "../../customHooks";
 
 const CreatePage = () => {
-  const initialValues: IContract = {
+  const { successAlert, errorAlert } = useNotifications();
+  const initialValues: ICreateBuyerPayload = {
     website: "",
     representedBy: "",
-    activated: false,
+    // activated: false,
     companyAddress: "",
     companyName: "",
     companyRegistrationNumber: "",
-    title: "",
+    // title: "",
     email: "",
     telephoneFax: "",
-    nationality: "",
+    status: "",
   };
   const validationSchema = Yup.object().shape({
     website: Yup.string().required("Website is required"),
     representedBy: Yup.string().required("Represented by is required"),
-    activated: Yup.boolean(),
+    // activated: Yup.boolean(),
     companyAddress: Yup.string().required("Company address is required"),
     companyName: Yup.string().required("Company name is required"),
     companyRegistrationNumber: Yup.string().required(
       "Company reg number is required"
     ),
-    title: Yup.string().required("Title is required"),
+    // title: Yup.string().required("Title is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
     telephoneFax: Yup.string().required("Phone is required"),
     nationality: Yup.string().required("Nationality is required"),
   });
-  const handleSubmit = (values: IContract) => {
+  const { mutate: handleCreateBuyer, isLoading: isCreateBuyerLoading } =
+    useCreateContract({
+      onSuccess: () => {
+        successAlert("Buyer created successfully");
+      },
+      onError: (err: any) => {
+        errorAlert(err.message || "Error occurred");
+      },
+    });
+  const handleSubmit = (values: ICreateBuyerPayload) => {
+    handleCreateBuyer(values);
     console.log(values);
   };
   return (
@@ -156,7 +169,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>{" "}
-                  <div className="md:w-[48%] w-[100%]">
+                  {/* <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="title" className="font-semibold">
                       Title
                     </label>
@@ -175,7 +188,7 @@ const CreatePage = () => {
                         {errors.title}
                       </p>
                     )}
-                  </div>{" "}
+                  </div>{" "} */}
                   <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="email" className="font-semibold">
                       Email
@@ -216,7 +229,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>
-                  <div className="md:w-[48%] w-[100%]">
+                  {/* <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="Nationality" className="font-semibold">
                       Nationality
                     </label>
@@ -237,8 +250,8 @@ const CreatePage = () => {
                         {errors.nationality}
                       </p>
                     )}
-                  </div>
-                  <div className="md:w-[48%] w-[100%]">
+                  </div> */}
+                  {/* <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="representedBy" className="font-semibold">
                       Represented By
                     </label>
@@ -259,7 +272,7 @@ const CreatePage = () => {
                         {errors.representedBy}
                       </p>
                     )}
-                  </div>
+                  </div> */}
                   <div className="md:w-[48%] w-[100%] flex flex-col items-left">
                     <label id="my-radio-group" className="font-semibold">
                       Is buyer activated?
@@ -273,24 +286,28 @@ const CreatePage = () => {
                         <Field
                           className="mr-2"
                           type="radio"
-                          name="activated"
-                          value={"true"}
+                          name="status"
+                          value={"ACTIVE"}
                         />
-                        Yes
+                        ACTIVE
                       </label>
-                      <label className=" cursor-pointer">
+                      <label className="cursor-pointer">
                         <Field
                           className="mr-2"
                           type="radio"
-                          name="activated"
-                          value={"false"}
+                          name="status"
+                          value={"INACTIVE"}
                         />
-                        No
+                        INACTIVE
                       </label>
                     </div>
                   </div>
                   <div className="w-full">
-                    <Button className="col-span-2 mt-4 w-full">
+                    <Button
+                      isLoading={isCreateBuyerLoading}
+                      className="col-span-2 mt-4 w-full "
+                      type="submit"
+                    >
                       CREATE BUYER
                     </Button>
                   </div>
