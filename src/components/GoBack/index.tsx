@@ -5,7 +5,7 @@ const Goback = () => {
   const navigate = useNavigate();
   return (
     <button
-      className="flex flex-row justify-between items-center bg-violet rounded p-2 mt-2 text-white"
+      className="flex flex-row justify-between items-center h-[48px] bg-violet rounded p-2  text-white"
       onClick={() => navigate(-1)}
     >
       <MdOutlineArrowBack />

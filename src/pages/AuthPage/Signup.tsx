@@ -14,6 +14,9 @@ const Signup = ({ setTab }: ISetTab) => {
     useCreateAccount({
       onSuccess: (res: any) => {
         successAlert("Sign up successful");
+        setTimeout(() => {
+          setTab("login");
+        }, 1500);
       },
       onError: (err: AxiosError) => {
         errorAlert(err.message);
@@ -161,7 +164,9 @@ const Signup = ({ setTab }: ISetTab) => {
               <p className="text-danger text-sm mt-[0px]">{errors.gender}</p>
             )}
           </div>
-          <Button className="w-full">CREATE ACCOUNT</Button>
+          <Button type="submit" className="w-full">
+            CREATE ACCOUNT
+          </Button>
           <p className="text-sm mt-2">
             Already have an account?{" "}
             <span

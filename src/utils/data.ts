@@ -179,7 +179,9 @@ export const tableHeaders = [
   "Telephone Fax",
   "Email",
   "Website",
-  "Activated",
+  "Status",
   "Edit",
   "Delete",
 ];
+
+export const userKey = "userDetails";

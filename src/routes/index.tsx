@@ -1,5 +1,6 @@
 import { useRoutes } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { userKey } from "../utils/data";
 import { PrivateRoutes, PublicRoutes } from "./routes";
 
 const PrivateRouteWrapper = () => {
@@ -12,8 +13,8 @@ const PublicRoutesWrapper = () => {
   return routes;
 };
 export const Pages = () => {
-  const user = !!localStorage.getItem("user");
-  return !user ? (
+  const user = !!localStorage.getItem(userKey);
+  return user ? (
     <>
       <Navbar />
       <PrivateRouteWrapper />

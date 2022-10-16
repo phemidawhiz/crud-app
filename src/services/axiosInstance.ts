@@ -4,8 +4,10 @@ import axios, {
   AxiosResponse,
   AxiosError,
 } from "axios";
+import { userKey } from "../utils/data";
+import { getAccessToken } from "../utils/helpers";
 
-export const baseURL = "http://193.122.65.123/api/";
+export const baseURL = "http://localhost:4000";
 const axiosInstance: AxiosInstance = axios.create({
   baseURL,
   headers: {
@@ -18,8 +20,8 @@ const axiosInstance: AxiosInstance = axios.create({
 // This adds a token before all the requests.
 // https://stackoverflow.com/questions/57251719/acquiring-a-new-token-with-axios-interceptors
 const onRequest = (request: AxiosRequestConfig): AxiosRequestConfig => {
-  const { access } = JSON.parse(localStorage.getItem("user") as string);
-  request.headers!.Authorization = `Bearer ${access}` || "";
+  const user = getAccessToken(userKey);
+  request.headers!.Authorization = `Bearer ${user.accessToken}` || "";
   return request;
 };
 
@@ -32,7 +34,7 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 };
 
 const onResponseError = async (error: AxiosError) => {
-  const user: any = JSON.parse(localStorage.getItem("user") as string);
+  const user: any = getAccessToken(userKey);
 
   const statusCode = error.response!.status;
   const originalRequest: any = error.config;

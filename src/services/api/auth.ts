@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ILoginPayload, ISignUpPayload } from "../../utils/types";
-const baseUrl = ``;
+const baseUrl = "http://localhost:4000";
 
 export const createAccount = async (body: ISignUpPayload) => {
   const res = await axios.post(`${baseUrl}/auth/signup`, body);

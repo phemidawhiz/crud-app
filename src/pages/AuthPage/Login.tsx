@@ -6,12 +6,18 @@ import Input from "../../components/Input";
 import { ILoginPayload, ISetTab } from "../../utils/types";
 import { useLogin } from "../../services/customHook/auth";
 import { useNotifications } from "../../customHooks";
+import { setToken } from "../../utils/helpers";
+import { userKey } from "../../utils/data";
 
 const Login = ({ setTab }: ISetTab) => {
   const { successAlert, errorAlert } = useNotifications();
   const { mutate: handleLogin, isLoading: isLoginLoading } = useLogin({
-    onSuccess: () => {
+    onSuccess: (res: any) => {
       successAlert("Login successfull");
+      setToken(userKey, res);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     },
     onError: (err: any) => {
       errorAlert(err.message);
@@ -22,8 +28,12 @@ const Login = ({ setTab }: ISetTab) => {
     password: "",
   };
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
-    password: Yup.string().required("Password is required"),
+    username: Yup.string()
+      .required("Username is required")
+      .max(20, "Username must have at most 20 characters"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must have at least 8 characters"),
   });
   const handleSubmit = (values: ILoginPayload) => {
     handleLogin(values);
@@ -78,7 +88,12 @@ const Login = ({ setTab }: ISetTab) => {
               <p className="text-danger text-sm mt-[0px]">{errors.password}</p>
             )}
           </div>
-          <Button className="w-full mt-4" isLoading={isLoginLoading}>
+          <Button
+            type="submit"
+            className="w-full mt-4"
+            isLoading={isLoginLoading}
+            isDisabled={isLoginLoading}
+          >
             LOGIN
           </Button>
           <p className="text-sm mt-2">

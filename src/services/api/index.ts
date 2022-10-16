@@ -1,30 +1,17 @@
-import { fakeBuyerDetails } from "../../utils/data";
+// import { fakeBuyerDetails } from "../../utils/data";
 import { ICreateBuyerPayload } from "../../utils/types";
 import axiosInstance from "../axiosInstance";
-export const getAllContracts = async (pageNo = 1, pageSize = 10) => {
+export const getAllContracts = async (pageNo: number, pageSize: number) => {
   const res = await axiosInstance.get(
     `/buyers/?all=yes&page=${pageNo}&take=${pageSize}`
   );
-  console.log(res);
 
-  return fakeBuyerDetails;
+  return res.data;
 };
 
 export const getContractById = async (id: string) => {
   const res = await axiosInstance(`/buyers/${id}`);
-  console.log(res);
-  return {
-    status: "INACTIVE",
-    website: "https://stacopoc@stacoinc.com",
-    title: "Mr",
-    representedBy: "Moran Stanton",
-    companyName: "ILLUMITY",
-    email: "moranstanton@illumity.com",
-    telephoneFax: "+23 (877) 528-2476",
-    companyAddress: "796 Knight Court, Wanship, Maryland, 4544",
-    nationality: "Mexico",
-    companyRegistrationNumber: "RC77383",
-  };
+  return res.data;
 };
 
 export const createContract = async (body: ICreateBuyerPayload) => {
@@ -33,6 +20,11 @@ export const createContract = async (body: ICreateBuyerPayload) => {
 };
 
 export const updateContract = async (body: ICreateBuyerPayload) => {
-  const res = await axiosInstance.put("/buyers", body);
+  const res = await axiosInstance.put(`/buyers/${body.id}`, body);
+  return res.data;
+};
+
+export const deleteBuyerDetails = async (id: string) => {
+  const res = await axiosInstance.delete(`/buyers/${id}`);
   return res.data;
 };

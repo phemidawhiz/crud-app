@@ -5,6 +5,6 @@ export const PUBLIC_ROUTES = {
 export const PRIVATE_ROUTES = {
   ALL_CONTRACTS: "/",
   CREATE_CONTRACT: "/create",
-  VIEW_CONTRACT: "/contract/:contractId",
-  UPDATE_CONTRACT: "/update/:contractId",
+  VIEW_CONTRACT: "/contract/:buyerId",
+  UPDATE_CONTRACT: "/update/:buyerId",
 };

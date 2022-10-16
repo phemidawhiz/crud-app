@@ -1,8 +1,7 @@
-import React from "react";
 import { Field, Formik } from "formik";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
-import { IContract, ICreateBuyerPayload } from "../../utils/types";
+import { ICreateBuyerPayload } from "../../utils/types";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import Goback from "../../components/GoBack";
@@ -11,49 +10,58 @@ import {
   useUpdateContract,
 } from "../../services/customHook";
 import { useNotifications } from "../../customHooks";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { ALL_BUYERS } from "../../services/customHook/queryKeys";
+import { useQueryClient } from "@tanstack/react-query";
 
-const UpdateContract = (props: any) => {
+const UpdateContract = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { buyerId = "" } = useParams();
   const { successAlert, errorAlert } = useNotifications();
-  const { data: contrractDetails } = useGetContractById("dafdf");
+  const { data: contractDetails } = useGetContractById(buyerId);
   const { mutate: handleUpdateBuyer, isLoading: isUpdateBuyerLoading } =
     useUpdateContract({
-      onSuccess: (res: any) => {
-        successAlert("Contract updated successfully");
+      onSuccess: async () => {
+        await queryClient.refetchQueries([ALL_BUYERS]);
+        successAlert("Buyer details updated successfully");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
       },
       onError: (err: any) => {
         errorAlert(err.message || "Error occurred");
       },
     });
   const initialValues: ICreateBuyerPayload = {
-    website: contrractDetails?.website || "",
-    representedBy: contrractDetails?.representedBy || "",
-    status: contrractDetails?.status || "",
-    companyAddress: contrractDetails?.companyAddress || "",
-    companyName: contrractDetails?.companyName || "",
-    companyRegistrationNumber:
-      contrractDetails?.companyRegistrationNumber || "",
-    // title: contrractDetails?.title || "",
-    email: contrractDetails?.email || "",
-    telephoneFax: contrractDetails?.telephoneFax || "",
-    // nationality: contrractDetails?.nationality || "",
+    website: contractDetails?.website || "",
+    representedBy: contractDetails?.representedBy || "",
+    // status: contractDetails?.status || "",
+    companyAddress: contractDetails?.companyAddress || "",
+    companyName: contractDetails?.companyName || "",
+    companyRegistrationNumber: contractDetails?.companyRegistrationNumber || "",
+    email: contractDetails?.email || "",
+    telephoneFax: contractDetails?.telephoneFax || "",
+    nationality: contractDetails?.nationality || "",
+    status: contractDetails?.status || "",
   };
   const validationSchema = Yup.object().shape({
     website: Yup.string().required("Website is required"),
     representedBy: Yup.string().required("Represented by is required"),
-    activated: Yup.boolean(),
     companyAddress: Yup.string().required("Company address is required"),
     companyName: Yup.string().required("Company name is required"),
     companyRegistrationNumber: Yup.string().required(
       "Company reg number is required"
     ),
-    title: Yup.string().required("Title is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
     telephoneFax: Yup.string().required("Phone is required"),
     nationality: Yup.string().required("Nationality is required"),
+    status: Yup.string().required("Status is required"),
   });
   const handleSubmit = (values: ICreateBuyerPayload) => {
-    console.log(values);
-    handleUpdateBuyer(values);
+    const updatedContractDetails = { ...values, id: contractDetails.id };
+    handleUpdateBuyer(updatedContractDetails);
   };
   return (
     <Container>
@@ -61,8 +69,8 @@ const UpdateContract = (props: any) => {
         <Goback />
       </div>
       <div className="flex flex-row justify-center items-center h-screen">
-        <div className="border-2 rounded-lg border-[#ddd] w-full sm:w-[100%] lg:w-[50%] md:w-[60%] md:mt-[0px] mt-[500px] pb-8">
-          <h3 className="text-2xl text-purple font-bold text-center my-2  md:mt-4">
+        <div className="border-2 rounded-lg border-[#ddd] w-full sm:w-[100%] lg:w-[50%] md:w-[60%] md:mt-[0px] mt-[450px] pb-8">
+          <h3 className="text-2xl text-purple font-bold text-center my-4 md:my-2  md:mt-4">
             Update Buyer Details
           </h3>
 
@@ -71,6 +79,7 @@ const UpdateContract = (props: any) => {
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
               initialValues={initialValues}
+              enableReinitialize={true}
             >
               {({
                 values,
@@ -79,6 +88,7 @@ const UpdateContract = (props: any) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
+                isValid,
               }) => (
                 <form
                   onSubmit={handleSubmit}
@@ -234,7 +244,7 @@ const UpdateContract = (props: any) => {
                       </p>
                     )}
                   </div>
-                  {/* <div className="md:w-[48%] w-[100%]">
+                  <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="Nationality" className="font-semibold">
                       Nationality
                     </label>
@@ -244,6 +254,7 @@ const UpdateContract = (props: any) => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Nationality"
+                      disabled
                       className={`relative  ${
                         touched.nationality && errors.nationality
                           ? "border-danger"
@@ -255,8 +266,8 @@ const UpdateContract = (props: any) => {
                         {errors.nationality}
                       </p>
                     )}
-                  </div> */}
-                  {/* <div className="md:w-[48%] w-[100%]">
+                  </div>
+                  <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="representedBy" className="font-semibold">
                       Represented By
                     </label>
@@ -277,11 +288,12 @@ const UpdateContract = (props: any) => {
                         {errors.representedBy}
                       </p>
                     )}
-                  </div> */}
+                  </div>
                   <div className="md:w-[48%] w-[100%] flex flex-col items-left">
                     <label id="my-radio-group" className="font-semibold">
-                      Is buyer activated?
+                      Is status active?
                     </label>
+
                     <div
                       role="group"
                       className="flex flex-row gap-4 items-center mt-2"
@@ -308,7 +320,11 @@ const UpdateContract = (props: any) => {
                     </div>
                   </div>
                   <div className="w-full">
-                    <Button isLoading={isUpdateBuyerLoading} className="w-full">
+                    <Button
+                      isLoading={isUpdateBuyerLoading}
+                      isDisabled={!isValid || isUpdateBuyerLoading}
+                      className="w-full"
+                    >
                       UPDATE BUYER
                     </Button>
                   </div>

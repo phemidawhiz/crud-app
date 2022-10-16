@@ -47,5 +47,7 @@ export interface ICreateBuyerPayload {
   telephoneFax: string;
   email: string;
   website: string;
-  status: string;
+  status?: string;
+  nationality?: string;
+  id?: string;
 }

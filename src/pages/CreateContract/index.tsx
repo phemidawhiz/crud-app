@@ -1,54 +1,59 @@
 import React from "react";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
-import { IContract, ICreateBuyerPayload } from "../../utils/types";
+import { ICreateBuyerPayload } from "../../utils/types";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import Goback from "../../components/GoBack";
 import { useCreateContract } from "../../services/customHook";
 import { useNotifications } from "../../customHooks";
+import { useQueryClient } from "@tanstack/react-query";
+import { ALL_BUYERS } from "../../services/customHook/queryKeys";
+import { useNavigate } from "react-router-dom";
 
 const CreatePage = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { successAlert, errorAlert } = useNotifications();
   const initialValues: ICreateBuyerPayload = {
     website: "",
     representedBy: "",
-    // activated: false,
     companyAddress: "",
     companyName: "",
     companyRegistrationNumber: "",
-    // title: "",
     email: "",
     telephoneFax: "",
-    status: "",
+    nationality: "",
   };
   const validationSchema = Yup.object().shape({
     website: Yup.string().required("Website is required"),
     representedBy: Yup.string().required("Represented by is required"),
-    // activated: Yup.boolean(),
     companyAddress: Yup.string().required("Company address is required"),
     companyName: Yup.string().required("Company name is required"),
     companyRegistrationNumber: Yup.string().required(
       "Company reg number is required"
     ),
-    // title: Yup.string().required("Title is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
     telephoneFax: Yup.string().required("Phone is required"),
-    nationality: Yup.string().required("Nationality is required"),
+    nationality: Yup.string(),
   });
   const { mutate: handleCreateBuyer, isLoading: isCreateBuyerLoading } =
     useCreateContract({
-      onSuccess: () => {
+      onSuccess: async () => {
+        await queryClient.refetchQueries([ALL_BUYERS]);
         successAlert("Buyer created successfully");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
       },
       onError: (err: any) => {
         errorAlert(err.message || "Error occurred");
       },
     });
   const handleSubmit = (values: ICreateBuyerPayload) => {
-    handleCreateBuyer(values);
     console.log(values);
+    handleCreateBuyer(values);
   };
   return (
     <Container>
@@ -56,9 +61,9 @@ const CreatePage = () => {
         <Goback />
       </div>
       <div className="flex flex-row justify-center items-center h-screen">
-        <div className="border-2 rounded-lg border-[#ddd] w-full sm:w-[100%] lg:w-[50%] md:w-[60%] md:mt-[0px] mt-[500px] pb-8">
+        <div className="border-2 rounded-lg border-[#ddd] w-full sm:w-[100%] lg:w-[50%] md:w-[60%] mt-[300px] md:mt-[0px] pb-8">
           <h3 className="text-2xl text-purple font-bold text-center my-2  md:mt-4">
-            Create a new buyer
+            Create new buyer
           </h3>
 
           <div className="w-[100%] px-4">
@@ -74,6 +79,7 @@ const CreatePage = () => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
+                isValid,
               }) => (
                 <form
                   onSubmit={handleSubmit}
@@ -229,7 +235,7 @@ const CreatePage = () => {
                       </p>
                     )}
                   </div>
-                  {/* <div className="md:w-[48%] w-[100%]">
+                  <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="Nationality" className="font-semibold">
                       Nationality
                     </label>
@@ -250,8 +256,8 @@ const CreatePage = () => {
                         {errors.nationality}
                       </p>
                     )}
-                  </div> */}
-                  {/* <div className="md:w-[48%] w-[100%]">
+                  </div>
+                  <div className="md:w-[48%] w-[100%]">
                     <label htmlFor="representedBy" className="font-semibold">
                       Represented By
                     </label>
@@ -262,7 +268,7 @@ const CreatePage = () => {
                       onBlur={handleBlur}
                       placeholder="John Mark"
                       className={`relative  ${
-                        touched.nationality && errors.representedBy
+                        touched.representedBy && errors.representedBy
                           ? "border-danger"
                           : ""
                       }`}
@@ -272,8 +278,8 @@ const CreatePage = () => {
                         {errors.representedBy}
                       </p>
                     )}
-                  </div> */}
-                  <div className="md:w-[48%] w-[100%] flex flex-col items-left">
+                  </div>
+                  {/* <div className="md:w-[48%] w-[100%] flex flex-col items-left">
                     <label id="my-radio-group" className="font-semibold">
                       Is buyer activated?
                     </label>
@@ -301,11 +307,12 @@ const CreatePage = () => {
                         INACTIVE
                       </label>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="w-full">
                     <Button
                       isLoading={isCreateBuyerLoading}
-                      className="col-span-2 mt-4 w-full "
+                      isDisabled={isCreateBuyerLoading || !isValid}
+                      className="col-span-2 mt-4 w-full"
                       type="submit"
                     >
                       CREATE BUYER

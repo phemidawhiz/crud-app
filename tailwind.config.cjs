@@ -40,6 +40,7 @@ module.exports = {
     },
     colors: {
       'purple': '#4834d4',
+      'blue': 'blue',
       'cyan': 'hsl(180, 66%, 49%)',
       'cyan-hover': 'rgba(41,199,199,0.7)',
       'violet': "#7158e2",

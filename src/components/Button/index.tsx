@@ -3,6 +3,7 @@ import React from "react";
 type ButtonProps = {
   className?: string;
   isLoading?: boolean;
+  isDisabled?: boolean;
 } & React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
@@ -13,13 +14,15 @@ const Loader = () => (
 const Button = ({
   children,
   isLoading,
+  isDisabled,
   className = "",
   ...rest
 }: ButtonProps) => {
   return (
     <button
       {...rest}
-      className={`rounded-md bg-purple py-2 px-2 text-sm flex flex-row justify-center items-center text-white h-[48px] font-bold text-white hover:bg-dark-violet ${className}`}
+      disabled={isDisabled}
+      className={`rounded-md bg-purple py-2 px-2 text-sm flex flex-row justify-center items-center text-white h-[48px] disabled:bg-gray disabled:text-black font-bold text-white hover:bg-dark-violet ${className}`}
     >
       {children}
       {isLoading && <Loader />}
