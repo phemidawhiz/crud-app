@@ -4,6 +4,7 @@ type ButtonProps = {
   className?: string;
   isLoading?: boolean;
   isDisabled?: boolean;
+  loadingText?: string;
 } & React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
@@ -15,6 +16,7 @@ const Button = ({
   children,
   isLoading,
   isDisabled,
+  loadingText = "",
   className = "",
   ...rest
 }: ButtonProps) => {
@@ -24,7 +26,7 @@ const Button = ({
       disabled={isDisabled}
       className={`rounded-md bg-purple py-2 px-2 text-sm flex flex-row justify-center items-center text-white h-[48px] disabled:bg-gray disabled:text-black font-bold text-white hover:bg-dark-violet ${className}`}
     >
-      {children}
+      {isLoading && loadingText ? loadingText : children}
       {isLoading && <Loader />}
     </button>
   );

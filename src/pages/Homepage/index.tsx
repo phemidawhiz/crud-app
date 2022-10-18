@@ -84,7 +84,7 @@ const HomePage = () => {
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-[100%] max-h-[400px] overflow-y-scroll border-collapse">
+          <table className="w-[100%] max-h-[400px] overflow-y-scroll border-collapse mt-[40px]">
             <thead className="text-left sticky top-0 bg-[#686de0] text-light">
               <tr>
                 {tableHeaders.map((el: string) => (
