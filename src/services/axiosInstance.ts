@@ -6,10 +6,10 @@ import axios, {
 } from "axios";
 import { userKey } from "../utils/data";
 import { getAccessToken } from "../utils/helpers";
+import { baseUrl } from "./config";
 
-export const baseURL = "http://localhost:4000";
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL,
+  baseURL: baseUrl,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json, text/plain, */*",

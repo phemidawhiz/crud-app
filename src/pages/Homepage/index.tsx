@@ -7,15 +7,16 @@ import { useDeleteBuyer, useGetContracts } from "../../services/customHook";
 import { tableHeaders } from "../../utils/data";
 import { FaPen, FaTimes } from "react-icons/fa";
 import { HiOutlinePlusCircle } from "react-icons/hi";
-import { IContract } from "../../utils/types";
 import { useDebounce, useNotifications } from "../../customHooks";
-import Modal from "../../components/Modal";
 import { ALL_BUYERS } from "../../services/customHook/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
+import DeleteModal from "../../components/Modal/DeleteModal";
 const HomePage = () => {
   const queryClient = useQueryClient();
   const { successAlert } = useNotifications();
+  const [showModal, setShowModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+
   const [showDeleteBuyerModal, setShowDeleteBuyerModal] = useState(false);
   const [buyer, setDeleteBuyer] = useState<any>(null);
   const {
@@ -50,7 +51,7 @@ const HomePage = () => {
   }
   return (
     <>
-      <Modal
+      <DeleteModal
         showModal={showDeleteBuyerModal}
         setShowModal={setShowDeleteBuyerModal}
         handleDeleteBuyer={() => handleMutateDelete(buyer.id)}

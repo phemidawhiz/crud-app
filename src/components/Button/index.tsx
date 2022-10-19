@@ -24,7 +24,7 @@ const Button = ({
     <button
       {...rest}
       disabled={isDisabled}
-      className={`rounded-md bg-purple py-2 px-2 text-sm flex flex-row justify-center items-center text-white h-[48px] disabled:bg-gray disabled:text-black font-bold text-white hover:bg-dark-violet ${className}`}
+      className={`rounded-md bg-purple py-2 px-2 text-sm flex flex-row justify-center items-center text-white h-[48px] disabled:bg-gray disabled-cursor-not-allowed disabled:text-black font-bold text-white hover:bg-dark-violet ${className}`}
     >
       {isLoading && loadingText ? loadingText : children}
       {isLoading && <Loader />}

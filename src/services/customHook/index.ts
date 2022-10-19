@@ -6,6 +6,7 @@ import {
   getAllContracts,
   getContractById,
   updateContract,
+  uploadFile,
 } from "../api";
 import { ALL_BUYERS } from "./queryKeys";
 
@@ -27,5 +28,10 @@ export const useUpdateContract = (options = {}) =>
 
 export const useDeleteBuyer = (options = {}) =>
   useMutation((id: string) => deleteBuyerDetails(id), {
+    ...options,
+  });
+
+export const useUploadFile = (options = {}) =>
+  useMutation((body: any) => uploadFile(body), {
     ...options,
   });

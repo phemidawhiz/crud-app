@@ -8,6 +8,7 @@ import Goback from "../../components/GoBack";
 import {
   useGetContractById,
   useUpdateContract,
+  useUploadFile,
 } from "../../services/customHook";
 import { useNotifications } from "../../customHooks";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,6 +17,7 @@ import { ALL_BUYERS } from "../../services/customHook/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
 
 const UpdateContract = () => {
+  const [file, setFile] = useState<any>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { buyerId = "" } = useParams();
@@ -63,10 +65,49 @@ const UpdateContract = () => {
     const updatedContractDetails = { ...values, id: contractDetails.id };
     handleUpdateBuyer(updatedContractDetails);
   };
+  const { mutate: fileUpload, isLoading: isFileUploading } = useUploadFile({
+    onSuccess: (_res: any) => {
+      successAlert("File upload successful");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    },
+    onError: (err: any) => {
+      console.log(err);
+      errorAlert("File upload failed. Please try again");
+    },
+  });
+  const handleSubmitFile = (e: any) => {
+    e.preventDefault();
+    const fd = new FormData();
+
+    fd.append("file", file);
+    fileUpload({ fd, buyerId });
+  };
   return (
     <Container>
       <div className="mt-8">
         <Goback />
+      </div>
+      <div className="border-[1px] rounded-lg mx-auto w-full sm:w-[100%] lg:w-[50%] md:w-[60%] p-4">
+        <form
+          onSubmit={handleSubmitFile}
+          className="flex flex-row items-center justify-between px-2 w-full py-4"
+        >
+          <input
+            type={"file"}
+            name="file"
+            onChange={(e: any) => setFile(e.target.files[0])}
+          />
+          <Button
+            loadingText="Uploading"
+            isLoading={isFileUploading}
+            isDisabled={isFileUploading || !file}
+            type="submit"
+          >
+            Upload
+          </Button>
+        </form>
       </div>
       <div className="flex flex-row justify-center items-center h-screen">
         <div className="border-2 rounded-lg border-[#ddd] w-full sm:w-[100%] lg:w-[50%] md:w-[60%] md:mt-[0px] mt-[450px] pb-8">
