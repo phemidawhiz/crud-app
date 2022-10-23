@@ -1,5 +1,7 @@
 export const PUBLIC_ROUTES = {
   AUTH_PAGE: "/auth",
+  FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password",
 };
 
 export const PRIVATE_ROUTES = {

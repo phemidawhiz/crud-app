@@ -1,5 +1,9 @@
 import axios from "axios";
-import { ILoginPayload, ISignUpPayload } from "../../utils/types";
+import {
+  ILoginPayload,
+  IResetPasswordPayload,
+  ISignUpPayload,
+} from "../../utils/types";
 import { baseUrl } from "../config";
 
 export const createAccount = async (body: ISignUpPayload) => {
@@ -9,5 +13,18 @@ export const createAccount = async (body: ISignUpPayload) => {
 
 export const login = async (body: ILoginPayload) => {
   const res = await axios.post(`${baseUrl}/auth/signin`, body);
+  return res.data;
+};
+
+export const initiatePasswordReset = async (emailId: string) => {
+  const res = await axios.get(`${baseUrl}/auth/password/request/${emailId}`);
+  return res.data;
+};
+
+export const resetPassword = async (body: IResetPasswordPayload) => {
+  const res = await axios.post(
+    `${baseUrl}/auth/password/reset/691761450`,
+    body
+  );
   return res.data;
 };

@@ -4,7 +4,7 @@ import Login from "./Login";
 import Signup from "./Signup";
 
 const AuthPage = () => {
-  const [tab, setTab] = useState("signup");
+  const [tab, setTab] = useState("login");
   return (
     <div className="w-screen h-screen flex flex-row justify-center items-center bg-light">
       <section className="lg:w-[40%] md:w-[60%] w-[90%] rounded shadow-md p-8 pb-8 bg-white">

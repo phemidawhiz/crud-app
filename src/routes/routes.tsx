@@ -4,7 +4,7 @@ import WithSuspense from "../components/WithSuspense";
 import { AppRoute } from "../utils/types";
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./constant";
 
-const { AUTH_PAGE } = PUBLIC_ROUTES;
+const { AUTH_PAGE, FORGOT_PASSWORD, RESET_PASSWORD } = PUBLIC_ROUTES;
 const { ALL_CONTRACTS, CREATE_CONTRACT, UPDATE_CONTRACT, VIEW_CONTRACT } =
   PRIVATE_ROUTES;
 
@@ -19,10 +19,19 @@ const UpdateContractPage = WithSuspense(
 const ViewContractPage = WithSuspense(
   lazy(() => import("../pages/ViewContract"))
 );
+const ForgotPassword = WithSuspense(
+  lazy(() => import("../pages/AuthPage/ForgotPassword"))
+);
+const ResetPassword = WithSuspense(
+  lazy(() => import("../pages/AuthPage/ResetPassword"))
+);
 
 export const PublicRoutes: AppRoute[] = [
   { element: <AuthPage />, path: AUTH_PAGE },
-  { element: <Navigate to={"/auth"} />, path: "*" },
+  { element: <ForgotPassword />, path: FORGOT_PASSWORD },
+  { element: <ResetPassword />, path: RESET_PASSWORD },
+
+  { element: <Navigate to={"/authJ"} />, path: "*" },
 ];
 
 export const PrivateRoutes: AppRoute[] = [

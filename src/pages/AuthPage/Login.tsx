@@ -9,6 +9,7 @@ import { useNotifications } from "../../customHooks";
 import { setAccessToken } from "../../utils/helpers";
 import { userKey } from "../../utils/data";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Login = ({ setTab }: ISetTab) => {
   const [passwordType, setPasswordType] = useState<"password" | "text">(
@@ -43,95 +44,103 @@ const Login = ({ setTab }: ISetTab) => {
     handleLogin(values);
   };
   return (
-    <Formik
-      onSubmit={handleSubmit}
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col my-4 relative">
-            <label htmlFor="">Username</label>
-            <Input
-              name="username"
-              value={values.username}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Your username"
-              // className="mt-1"
-              className={
-                touched.username && errors.username ? "border-danger" : ""
-              }
-            />
-            {errors.username && touched.username && (
-              <p className="text-danger text-xs mt-[0px] absolute top-[68px]">
-                {errors.username}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-col mt-4 relative">
-            <label htmlFor="">Password</label>
-            <div className="flex flex-row items-center">
+    <>
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col my-4 relative">
+              <label htmlFor="">Username</label>
               <Input
-                name="password"
-                type={passwordType}
-                value={values.password}
+                name="username"
+                value={values.username}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="sample@test.com"
-                // className="mt-2"
+                placeholder="Your username"
+                // className="mt-1"
                 className={
-                  touched.password && errors.password ? "border-danger" : ""
+                  touched.username && errors.username ? "border-danger" : ""
                 }
               />
-              <div className="z-50 ml-[-40px]">
-                {passwordType === "password" ? (
-                  <FaEye
-                    cursor={"pointer"}
-                    onClick={() => setPasswordType("text")}
-                  />
-                ) : (
-                  <FaEyeSlash
-                    cursor={"pointer"}
-                    onClick={() => setPasswordType("password")}
-                  />
-                )}
-              </div>
+              {errors.username && touched.username && (
+                <p className="text-danger text-xs mt-[0px] absolute top-[68px]">
+                  {errors.username}
+                </p>
+              )}
             </div>
-            {errors.password && touched.password && (
-              <p className="text-danger text-xs mt-[0px] absolute top-[68px]">
-                {errors.password}
-              </p>
-            )}
-          </div>
-          <Button
-            type="submit"
-            className="w-full mt-8"
-            isLoading={isLoginLoading}
-            isDisabled={isLoginLoading}
-            loadingText="Logging in"
-          >
-            LOGIN
-          </Button>
-          <p className="text-sm mt-2">
-            Don't have an account?{" "}
-            <span
-              className="text-purple cursor-pointer"
-              onClick={() => setTab("signup")}
+            <div className="flex flex-col mt-4 relative">
+              <label htmlFor="">Password</label>
+              <div className="flex flex-row items-center">
+                <Input
+                  name="password"
+                  type={passwordType}
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="sample@test.com"
+                  // className="mt-2"
+                  className={
+                    touched.password && errors.password ? "border-danger" : ""
+                  }
+                />
+                <div className="z-50 ml-[-40px]">
+                  {passwordType === "password" ? (
+                    <FaEye
+                      cursor={"pointer"}
+                      onClick={() => setPasswordType("text")}
+                    />
+                  ) : (
+                    <FaEyeSlash
+                      cursor={"pointer"}
+                      onClick={() => setPasswordType("password")}
+                    />
+                  )}
+                </div>
+              </div>
+              {errors.password && touched.password && (
+                <p className="text-danger text-xs mt-[0px] absolute top-[68px]">
+                  {errors.password}
+                </p>
+              )}
+            </div>
+            <Button
+              type="submit"
+              className="w-full mt-8"
+              isLoading={isLoginLoading}
+              isDisabled={isLoginLoading}
+              loadingText="Logging in"
             >
-              Sign up
-            </span>
-          </p>
-        </form>
-      )}
-    </Formik>
+              LOGIN
+            </Button>
+          </form>
+        )}
+      </Formik>
+      <div className="flex flex-row justify-between w-full items-center mt-4">
+        <p className="text-sm ">
+          Don't have an account?{" "}
+          <span
+            className="text-purple cursor-pointer"
+            onClick={() => setTab("signup")}
+          >
+            Sign up
+          </span>
+        </p>
+
+        <Link to={"/forgot-password"} className="text-sm text-[blue]">
+          Forgot Password?
+        </Link>
+      </div>
+    </>
   );
 };
 

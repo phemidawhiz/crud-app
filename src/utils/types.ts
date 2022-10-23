@@ -51,3 +51,5 @@ export interface ICreateBuyerPayload {
   nationality?: string;
   id?: string;
 }
+
+export interface IResetPasswordPayload {}
