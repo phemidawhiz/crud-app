@@ -19,9 +19,9 @@ const Dropdown = ({ handleLogout, onBlur, tabIndex }: IDropdown) => {
           LOGOUT
         </h4>
       </div>
-      <div className="hover:bg-purple hover:text-white p-2 cursor-pointer">
+      {/* <div className="hover:bg-purple hover:text-white p-2 cursor-pointer">
         <h4 className="font-medium text-sm">VIEW PROFILE</h4>
-      </div>
+      </div> */}
     </>
   );
 };

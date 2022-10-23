@@ -31,7 +31,7 @@ export const PublicRoutes: AppRoute[] = [
   { element: <ForgotPassword />, path: FORGOT_PASSWORD },
   { element: <ResetPassword />, path: RESET_PASSWORD },
 
-  { element: <Navigate to={"/authJ"} />, path: "*" },
+  { element: <Navigate to={"/auth"} />, path: "*" },
 ];
 
 export const PrivateRoutes: AppRoute[] = [

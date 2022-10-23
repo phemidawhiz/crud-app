@@ -31,7 +31,10 @@ const DeleteModal = ({
             </button>
           </div>
           <div className="max-h-48 overflow-y-scroll p-4">
-            <p>Are you sure you want to delete {buyer?.companyName}?</p>
+            <p>
+              Are you sure you want to delete{" "}
+              <strong>{buyer?.companyName}</strong>?
+            </p>
           </div>
           <div className="px-4 py-2 border-t border-t-gray flex justify-end items-center space-x-4">
             <Button
