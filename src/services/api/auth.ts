@@ -21,9 +21,14 @@ export const initiatePasswordReset = async (emailId: string) => {
   return res.data;
 };
 
+export const getToken = async (token: string) => {
+  const res = await axios.get(`${baseUrl}/token/${token}`);
+  return res.data;
+};
+
 export const resetPassword = async (body: IResetPasswordPayload) => {
   const res = await axios.post(
-    `${baseUrl}/auth/password/reset/691761450`,
+    `${baseUrl}/auth/password/reset/${body.token}`,
     body
   );
   return res.data;

@@ -4,19 +4,23 @@ import Button from "../../components/Button";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
 import { useNotifications } from "../../customHooks";
+import { getToken } from "../../services/api/auth";
 import { useResetPassword } from "../../services/customHook/auth";
 
 const ResetPassword = () => {
   const { successAlert, errorAlert } = useNotifications();
+  const queryParams = new URLSearchParams(location.search).get(
+    "token"
+  ) as string;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { isLoading: isResetPasswordLoading, mutate: mutatePasswordReset } =
     useResetPassword({
-      onSuccess: (res: any) => {
-        console.log(res);
+      onSuccess: (_res: any) => {
         navigate("/auth");
         successAlert("Password reset successful");
+        getToken(queryParams).then((res) => res);
       },
       onError: (err: any) => {
         errorAlert(
@@ -29,6 +33,7 @@ const ResetPassword = () => {
     mutatePasswordReset({
       password,
       emailaddress: email,
+      token: queryParams,
     });
   };
   return (

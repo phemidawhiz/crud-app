@@ -5,13 +5,16 @@ import {
   deleteBuyerDetails,
   getAllContracts,
   getContractById,
+  getFiles,
   updateContract,
   uploadFile,
 } from "../api";
 import { ALL_BUYERS } from "./queryKeys";
 
-export const useGetContracts = (pageNo = 1, pageSize = 10) =>
-  useQuery([ALL_BUYERS], () => getAllContracts(pageNo, pageSize));
+export const useGetContracts = (pageNo = 1, pageSize = "10") =>
+  useQuery([ALL_BUYERS, pageNo, pageSize], () =>
+    getAllContracts(pageNo, pageSize)
+  );
 
 export const useGetContractById = (id: string, options = {}) => {
   return useQuery([`BUYER_${id}`], () => getContractById(id), { ...options });
@@ -35,3 +38,7 @@ export const useUploadFile = (options = {}) =>
   useMutation((body: any) => uploadFile(body), {
     ...options,
   });
+
+export const useGetFiles = () => {
+  return useQuery(["files"], () => getFiles());
+};

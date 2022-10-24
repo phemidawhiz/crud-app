@@ -5,7 +5,10 @@ import { getAccessToken } from "../../utils/helpers";
 import { ICreateBuyerPayload } from "../../utils/types";
 import axiosInstance from "../axiosInstance";
 import { baseUrl } from "../config";
-export const getAllContracts = async (pageNo: number, pageSize: number) => {
+export const getAllContracts = async (
+  pageNo: number,
+  pageSize: string | number
+) => {
   const res = await axiosInstance.get(
     `/buyers/?all=yes&page=${pageNo}&take=${pageSize}`
   );
@@ -43,5 +46,9 @@ export const uploadFile = async ({ fd, buyerId }: any) => {
     },
   };
   const res = await axios.post(`${baseUrl}/files/${buyerId}`, fd, config);
+  return res.data;
+};
+export const getFiles = async () => {
+  const res = await axiosInstance.get(`/files/?buyerId=5&page=1&take=3`);
   return res.data;
 };

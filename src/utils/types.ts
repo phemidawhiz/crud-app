@@ -52,4 +52,8 @@ export interface ICreateBuyerPayload {
   id?: string;
 }
 
-export interface IResetPasswordPayload {}
+export interface IResetPasswordPayload {
+  emailaddress: string;
+  password: string;
+  token?: string;
+}

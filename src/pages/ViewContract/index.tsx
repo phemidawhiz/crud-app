@@ -4,18 +4,24 @@ import { useParams, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
 import Goback from "../../components/GoBack";
+import { useNotifications } from "../../customHooks";
 import { useGetContractById } from "../../services/customHook";
 
 const ViewBuyer = () => {
   const { buyerId = "" } = useParams();
+  const { errorAlert } = useNotifications();
   const navigate = useNavigate();
   const { data: buyerDetails, isLoading: isBuyerDetailsLoading } =
-    useGetContractById(buyerId);
+    useGetContractById(buyerId, {
+      onError: (err: any) => {
+        errorAlert(err?.response?.data?.message || "Error occurred");
+      },
+    });
 
   if (isBuyerDetailsLoading) {
     return (
-      <div className="flex flex-row justify-center ">
-        <div className="animate-pulse flex space-x-4"></div>
+      <div className="flex flex-row justify-center items-center">
+        <div className="animate-spin mt-[100px] border-4 w-[100px] h-[100px] border-t-light rounded-full"></div>
       </div>
     );
   }

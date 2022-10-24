@@ -10,7 +10,7 @@ type ButtonProps = {
   HTMLButtonElement
 >;
 const Loader = () => (
-  <div className="animate-spin h-[24px] ml-4 rounded-full w-[24px] text-white border-2 border-t-0 border-l-0 border-r-0"></div>
+  <div className="animate-spin h-[24px] ml-4 rounded-full w-[24px] text-white border-2 border-purple border-t-light border-l-light"></div>
 );
 const Button = ({
   children,

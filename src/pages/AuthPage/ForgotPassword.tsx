@@ -13,7 +13,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const { data: _, isLoading } = useInitiatePasswordReset(emailId, {
     onSuccess: (res: any) => {
-      navigate("/reset-password");
+      navigate("/auth/confirm");
       successAlert("Password reset link has been sent to your email");
       console.log(res);
     },
