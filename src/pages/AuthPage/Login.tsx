@@ -125,18 +125,21 @@ const Login = ({ setTab }: ISetTab) => {
           </form>
         )}
       </Formik>
-      <div className="flex flex-row justify-between w-full items-center mt-4">
-        <p className="text-sm ">
+      <div className="flex flex-col gap-2 sm:flex-row justify-between w-full items-center mt-4">
+        <p className="text-xs md:text-sm">
           Don't have an account?{" "}
           <span
-            className="text-purple cursor-pointer"
+            className="text-purple cursor-pointer "
             onClick={() => setTab("signup")}
           >
             Sign up
           </span>
         </p>
 
-        <Link to={"/forgot-password"} className="text-sm text-[blue]">
+        <Link
+          to={"/forgot-password"}
+          className="text-xs md:text-sm text-[blue]"
+        >
           Forgot Password?
         </Link>
       </div>

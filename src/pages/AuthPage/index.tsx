@@ -6,7 +6,7 @@ import Signup from "./Signup";
 const AuthPage = () => {
   const [tab, setTab] = useState("login");
   return (
-    <div className="w-screen h-screen flex flex-row justify-center items-center bg-light">
+    <div className="w-screen h-screen flex flex-row justify-center items-start mt-16 md:items-center bg-light">
       <section className="lg:w-[40%] md:w-[60%] w-[90%] rounded shadow-md p-8 pb-8 bg-white">
         <div className="flex flex-row w-[100%] justify-between gap-4">
           <header

@@ -1,4 +1,3 @@
-import React from "react";
 import { FaPen } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";

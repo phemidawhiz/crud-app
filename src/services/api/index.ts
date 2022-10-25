@@ -6,11 +6,12 @@ import { ICreateBuyerPayload } from "../../utils/types";
 import axiosInstance from "../axiosInstance";
 import { baseUrl } from "../config";
 export const getAllContracts = async (
+  nationality: string,
   pageNo: number,
   pageSize: string | number
 ) => {
   const res = await axiosInstance.get(
-    `/buyers/?all=yes&page=${pageNo}&take=${pageSize}`
+    `/buyers/?all=yes${nationality}&page=${pageNo}&take=${pageSize}`
   );
 
   return res.data;

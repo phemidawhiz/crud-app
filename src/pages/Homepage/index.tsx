@@ -3,11 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import TableLoader from "../../components/TableLoader";
-import {
-  useDeleteBuyer,
-  useGetContracts,
-  useGetFiles,
-} from "../../services/customHook";
+import { useDeleteBuyer, useGetContracts } from "../../services/customHook";
 import { tableHeaders } from "../../utils/data";
 import { FaPen, FaTimes } from "react-icons/fa";
 import { HiOutlinePlusCircle } from "react-icons/hi";
@@ -24,14 +20,13 @@ const HomePage = () => {
   const [pageSize, setPageSize] = useState("10");
   const [showDeleteBuyerModal, setShowDeleteBuyerModal] = useState(false);
   const [buyer, setDeleteBuyer] = useState<any>(null);
-
-  const { data } = useGetFiles();
-  console.log(data);
+  const debouncedValue = useDebounce(searchValue, 1000);
+  const nationality = debouncedValue ? `&nationality=${debouncedValue}` : "";
   const {
     data: buyerDetails,
     isLoading: isBuyersLoading,
     error,
-  }: any = useGetContracts(pageNo + 1, pageSize);
+  }: any = useGetContracts(nationality, pageNo + 1, pageSize);
   const { mutate: handleMutateDelete, isLoading: isDeletingBuyer } =
     useDeleteBuyer({
       onSuccess: async () => {
@@ -50,7 +45,6 @@ const HomePage = () => {
     setDeleteBuyer(item);
     setShowDeleteBuyerModal(true);
   };
-  const debouncedValue = useDebounce(searchValue, 2000);
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
@@ -82,7 +76,7 @@ const HomePage = () => {
             <Input
               search
               className="w-[100%] lg:w-[100%] md:w-[100%] h-[48px] text-sm placeholder:text-sm mx-auto md:ml-auto"
-              placeholder="Search by phone number"
+              placeholder="Search by nationality"
               value={searchValue}
               onChange={handleSearch}
             />
@@ -98,8 +92,11 @@ const HomePage = () => {
         </div>
         <div className="overflow-x-auto max-h-[60vh] overflow-y-scroll mt-[20px]">
           {isBuyersLoading ? (
-            <TableLoader />
+            <div className="flex flex-row justify-center items-center">
+              <div className="animate-spin mt-[100px] border-4 w-[50px] h-[50px] border-t-light rounded-full"></div>
+            </div>
           ) : (
+            // <TableLoader />
             <table className="w-[100%]  border-collapse">
               <thead className="text-left sticky top-[0px] bg-[#686de0] text-light">
                 <tr>
@@ -191,12 +188,14 @@ const HomePage = () => {
         </div>
         <section className="flex flex-row justify-end mt-4 gap-8">
           <Pagination
-            pageCount={buyerDetails?.meta?.pageCount}
+            pageCount={~~buyerDetails?.meta?.pageCount}
             handlePageClick={handlePagination}
           />
           <select onChange={handlePageSizeChange} defaultValue={10}>
             {[10, 20, 50].map((el) => (
-              <option value={el}>{el}</option>
+              <option key={el} value={el}>
+                {el}
+              </option>
             ))}
           </select>
         </section>
