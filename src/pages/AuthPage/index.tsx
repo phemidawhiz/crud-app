@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Login from "./Login";
-
 import Signup from "./Signup";
-
+import "./authpage.css";
 const AuthPage = () => {
   const [tab, setTab] = useState("login");
   return (
-    <div className="w-screen h-screen flex flex-row justify-center items-start mt-16 md:items-center bg-light">
-      <section className="lg:w-[40%] md:w-[60%] w-[90%] rounded shadow-md p-8 pb-8 bg-white">
+    <div className="auth-page py-4 md:py-0 w-screen min-h-screen flex flex-row justify-center items-center bg-no-repeat bg-cover bg-light bg-[url('/src/assets/auth-bg.svg')]">
+      <section className="lg:w-[40%] md:w-[60%] max-w-[800px] md:max-h-[600px] w-[90%] rounded shadow-md p-8 pb-8 bg-white">
         <div className="flex flex-row w-[100%] justify-between gap-4">
           <header
             className={`w-[50%] text-center cursor-pointer p-2 ${

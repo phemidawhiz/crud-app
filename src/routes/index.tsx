@@ -23,7 +23,7 @@ export const Pages = () => {
     </>
   ) : (
     <>
-      <div className="h-[60px] flex flex-row justify-between items-center px-8 md:px-16 bg-purple text-white sticky top-0 mb-4">
+      <div className="h-[60px] flex flex-row justify-between items-center px-8 md:px-16 bg-purple text-white sticky top-0">
         <h3 className="cursor-pointer" onClick={() => navigate("/auth")}>
           LOGO
         </h3>

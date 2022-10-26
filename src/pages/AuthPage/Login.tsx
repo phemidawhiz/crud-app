@@ -112,10 +112,16 @@ const Login = ({ setTab }: ISetTab) => {
                   {errors.password}
                 </p>
               )}
+              <Link
+                to={"/forgot-password"}
+                className="text-sm text-[blue]  my-4 mt-2"
+              >
+                Forgot Password?
+              </Link>
             </div>
             <Button
               type="submit"
-              className="w-full mt-8"
+              className="w-full"
               isLoading={isLoginLoading}
               isDisabled={isLoginLoading}
               loadingText="Logging in"
@@ -126,7 +132,7 @@ const Login = ({ setTab }: ISetTab) => {
         )}
       </Formik>
       <div className="flex flex-col gap-2 sm:flex-row justify-between w-full items-center mt-4">
-        <p className="text-xs md:text-sm">
+        <p className="text-sm">
           Don't have an account?{" "}
           <span
             className="text-purple cursor-pointer "
@@ -135,13 +141,6 @@ const Login = ({ setTab }: ISetTab) => {
             Sign up
           </span>
         </p>
-
-        <Link
-          to={"/forgot-password"}
-          className="text-xs md:text-sm text-[blue]"
-        >
-          Forgot Password?
-        </Link>
       </div>
     </>
   );

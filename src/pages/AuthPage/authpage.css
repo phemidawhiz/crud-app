@@ -1,0 +1,9 @@
+@keyframes pan {
+  100% {
+    background-position: 15% 100%;
+  }
+}
+
+.auth-page {
+  animation: pan 6s infinite alternate linear;
+}

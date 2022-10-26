@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <>
-      <Pages />;
+      <Pages />
       <Toaster position="top-right" />
     </>
   );
