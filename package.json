@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "npm ci && npm run build && npm run start:prod"
+    "deploy": "npm ci && npm run build && npm run dev"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.10.3",
